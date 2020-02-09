@@ -26,7 +26,7 @@ trait AttributesMassAssignable
      *          ]
      * @return  self
      */
-    protected function massAssign($data = [])
+    protected function massAssignAttributes($data = [])
     {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
@@ -47,7 +47,7 @@ trait AttributesMassAssignable
      * @param array $data
      * @return void
      */
-    public static function massAssignStatics($data = [])
+    public static function massAssignStaticAttributes($data = [])
     {
         // if (is_array($data)) {
         //     foreach ($data as $key => $value) {
@@ -59,6 +59,6 @@ trait AttributesMassAssignable
         //     }
         // }
 
-        return $this;
+        // return $this;
     }
 }

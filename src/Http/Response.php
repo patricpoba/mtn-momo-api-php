@@ -1,30 +1,41 @@
 <?php
 
 namespace PatricPoba\MtnMomo\Http;
+
+use PatricPoba\MtnMomo\Utilities\AttributesMassAssignable;
   
 
 class Response
 {
+    use AttributesMassAssignable;
+    
     protected $headers;
     protected $content;
     protected $statusCode;
 
     /**
-     * Undocumented function
+     * Construct object
      *
-     * @param numeric $statusCode
+     * @param int $statusCode
      * @param string $content
      * @param array $headers
      */
     public function __construct($statusCode, $content, $headers = array())
     {
         $this->statusCode = $statusCode;
-        $this->content = $content;
         $this->headers = $headers;
+        $this->content = $content;
+
+        /**
+         * Dynamically create class variables from content array, so content can be accessed directly.
+         * eg $response->category, $response->user_id for ['category'=> 'Electronics','user_id'=> 4]
+         * $this->content must be set before calling $this->massAssignAttributes()
+         */
+        $this->massAssignAttributes($this->getContent());
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getContent()
     {
@@ -32,7 +43,7 @@ class Response
     }
 
     /**
-     * @return mixed
+     * @return numeric
      */
     public function getStatusCode()
     {
@@ -43,11 +54,7 @@ class Response
     {
         return $this->headers;
     }
-
-    public function ok()
-    {
-        return $this->getStatusCode() < 400;
-    }
+ 
 
     public function __toString()
     {

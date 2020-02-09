@@ -14,9 +14,7 @@ trait AttributesMassAssignable
 {
     /**
      * This method is used to mass assign the properties required in a class.
-     *
-     * How does this happen? Magic! naaaaaa.
-     *
+     *  
      * It loops through the fields marked as required and optional
      * and then assisngs values to those fields using accessors
      * available in the class for those required options.
@@ -39,6 +37,27 @@ trait AttributesMassAssignable
                 }
             }
         }
+
+        return $this;
+    }
+    
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function massAssignStatics($data = [])
+    {
+        // if (is_array($data)) {
+        //     foreach ($data as $key => $value) {
+        //         if (method_exists($this, 'set' . $key)
+        //             && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
+        //         ) {
+        //             $this->{'set' . $key}($value);
+        //         }
+        //     }
+        // }
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Patricpoba\MtnMomoApiPhp\Tests;
+namespace Patricpoba\MtnMomo\Tests;
 
 use PHPUnit\Framework\TestCase;
 

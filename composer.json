@@ -16,19 +16,19 @@
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
         "psr-4": {
-            "Patricpoba\\MtnMomoApiPhp\\": "src"
+            "PatricPoba\\MtnMomo\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Patricpoba\\MtnMomoApiPhp\\Tests\\": "tests"
+            "PatricPoba\\MtnMomo\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -38,5 +38,6 @@
     },
     "config": {
         "sort-packages": true
-    }
+    },
+    "minimum-stability": "dev"
 }

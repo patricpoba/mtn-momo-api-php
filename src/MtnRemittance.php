@@ -2,7 +2,7 @@
 
 namespace PatricPoba\MtnMomo;
 
-class MtnRemittance
+class MtnRemittance extends MtnMomo 
 {
     // Build your next great package.
 }

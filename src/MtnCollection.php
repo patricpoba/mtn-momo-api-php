@@ -2,7 +2,7 @@
 
 namespace PatricPoba\MtnMomo;
 
-class MtnCollection
+class MtnCollection extends MtnMomo 
 {
     // Build your next great package.
 }

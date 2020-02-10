@@ -35,9 +35,19 @@ class Response
     }
 
     /**
+     * Get array format of api response
      * @return array
      */
-    public function getContent()
+    public function array()
+    {
+        return \json_decode($this->content, true);
+    }
+
+    /**
+     * Get json format of api response
+     * @return string
+     */
+    public function json()
     {
         return \json_decode($this->content, true);
     }

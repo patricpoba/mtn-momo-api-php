@@ -1,8 +1,12 @@
 <?php
 
 namespace PatricPoba\MtnMomo;
+ 
+use GuzzleHttp\Client;
+use PatricPoba\MtnMomo\MtnConfig;
+use PatricPoba\MtnMomo\Http\GuzzleClient;
 
-class MtnMomo
+class MtnMomo extends GuzzleClient
 {
     /**
      * @var string the base url of the API 
@@ -77,5 +81,39 @@ class MtnMomo
 
 
 
+    public function __construct(MtnConfig $config)
+    { 
+        parent::__construct();
+        
+    }
+
+    /**
+     * @param array|null        $params 
+     *
+     * @return string The OAuth Token.
+     */
+    public function getToken()
+    {
+ 
+        // $url = $this->_baseUrl . '/collection/token/';
+
+
+        // $encodedString = base64_encode(
+        //     MomoApi::getCollectionUserId() . ':' . MomoApi::getCollectionApiSecret()
+        // );
+        // $headers = [
+        //     'Authorization' => 'Basic ' . $encodedString,
+        //     'Content-Type' => 'application/json',
+        //     'Ocp-Apim-Subscription-Key' => MomoApi::getCollectionPrimaryKey()
+        // ];
+
+
+        // $response = self::request('post', $url, $params, $headers);
+
+
+        // $obj = ResourceFactory::accessTokenFromJson($response->json);
+
+        // return $obj;
+    }
     
 }

@@ -2,11 +2,12 @@
  
 namespace PatricPoba\MtnMomo\Http;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\ClientInterface;
 use PatricPoba\MtnMomo\MtnMomoException;
 
-final class GuzzleClient implements HttpClientInterface
+class GuzzleClient implements HttpClientInterface
 {
     /**
      * @var ClientInterface
@@ -21,9 +22,12 @@ final class GuzzleClient implements HttpClientInterface
     private static $instance;
 
 
-    public function __construct(ClientInterface $client)
+    public function __construct(ClientInterface $client = null)
     {
-        $this->client = $client;
+        if ($client) {
+            $this->client = $client;
+        }
+        $this->client = new Client(); 
     }
  
     /**

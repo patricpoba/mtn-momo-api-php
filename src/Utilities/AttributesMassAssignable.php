@@ -42,23 +42,22 @@ trait AttributesMassAssignable
     }
     
     /**
-     * Undocumented function
+     * Assign static variables in a dynamic way
      *
      * @param array $data
      * @return void
      */
-    public static function massAssignStaticAttributes($data = [])
+    public static function massAssignStaticAttributes($data = []) 
     {
-        // if (is_array($data)) {
-        //     foreach ($data as $key => $value) {
-        //         if (method_exists($this, 'set' . $key)
-        //             && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
-        //         ) {
-        //             $this->{'set' . $key}($value);
-        //         }
-        //     }
-        // }
-
-        // return $this;
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (method_exists($this, 'set' . $key)
+                    && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
+                ) {
+                    self::$key = $value; 
+                }
+            }
+        }
+ 
     }
 }

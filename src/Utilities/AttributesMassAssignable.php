@@ -24,17 +24,21 @@ trait AttributesMassAssignable
      *              'walletId' => 'some-existing-walletId',
      *              'transactionId' => 'someExistingTransactionId'
      *          ]
-     * @return  self
+     * @return  static
      */
     protected function massAssignAttributes($data = [])
     {
-        if (is_array($data)) {
-            foreach ($data as $key => $value) {
-                if (method_exists($this, 'set' . $key)
-                    && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
-                ) {
-                    $this->{'set' . $key}($value);
-                }
+        if ( ! is_array($data)) {
+            return $this;
+        }
+
+        foreach ($data as $key => $value) {
+            if ( method_exists($this, 'set' . ucfirst($key))
+                // && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
+            ) {
+                $this->{'set' . $key}($value);
+            }else{
+                $this->$key = $value;
             }
         }
 
@@ -47,17 +51,17 @@ trait AttributesMassAssignable
      * @param array $data
      * @return void
      */
-    public static function massAssignStaticAttributes($data = []) 
-    {
-        if (is_array($data)) {
-            foreach ($data as $key => $value) {
-                if (method_exists($this, 'set' . $key)
-                    && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
-                ) {
-                    self::$key = $value; 
-                }
-            }
-        }
+    // public static function massAssignStaticAttributes($data = []) 
+    // {
+    //     if (is_array($data)) {
+    //         foreach ($data as $key => $value) {
+    //             if (method_exists($this, 'set' . $key)
+    //                 && in_array($key, array_merge($this->parametersRequired, $this->parametersOptional))
+    //             ) {
+    //                 self::$key = $value; 
+    //             }
+    //         }
+    //     }
  
-    }
+    // }
 }

@@ -1,7 +1,8 @@
 <?php
 
 namespace PatricPoba\MtnMomo;
-
+ 
+use PatricPoba\MtnMomo\Exceptions\CredentialsNotSetException;
 use PatricPoba\MtnMomo\Utilities\AttributesMassAssignable;
 
 class MtnConfig 
@@ -64,6 +65,17 @@ class MtnConfig
 
 
     /**
+     * Set values of configs
+     *
+     * @param array $configs
+     * @return void
+     */
+    public function __construct($configs)
+    {
+        $this->massAssignAttributes($configs);
+    }
+
+    /**
      * Checck if all credentials are filled for the necessary
      * product 
      *
@@ -72,37 +84,36 @@ class MtnConfig
      * @return void
      */ 
     public function validate($product)
-    {
-        $subCredentials = [ 'baseUrl', 'targe', 'currency', 'ApiSecret', 'PrimaryKey', 'UserId'];
-        
-        
+    { 
         $missingCredentials = [];
-        foreach ($subCredentials as $subCredential) {
-            /**
-             * Eg. For collections, check if the following is set 
-             * - $this->collectionApiSecret, 
-             * - $this->collectionPrimaryKey, and 
-             * - $this->collectionUserId,
-             * */  
-            if (is_null($this->{$product . $subCredential}) ) {
-                $missingCredentials[] = $product . $subCredential ;
+         
+        foreach ($this->requiredConfigs($product) as $config) {
+           
+            if (is_null($this->{$config}) ) {
+                $missingCredentials[] = $config ;
             }
         }
 
         if( ! empty($missingCredentials)){
-            throw new \Exception("The followig credentials are missing: " . implode(', ', $missingCredentials) ); 
-        }
-        
+            throw new CredentialsNotSetException("The followig credentials are missing: " . implode(', ', $missingCredentials) ); 
+        } 
     }
 
     /**
      * Get set of configs required according to the product being used.
      *
-     * @param string $product
+     * @param string $product disbursement | remittance | collection 
      * @return array
      */
     protected function requiredConfigs($product)
-    {
-        # code...
+    { 
+        return [ 
+            'baseUrl', 
+            'currency', 
+            'targetEnvironment', 
+            $product . 'ApiSecret', 
+            $product . 'PrimaryKey', 
+            $product . 'UserId'
+        ];
     }
 }

@@ -17,8 +17,16 @@ class MtnMomo extends GuzzleClient
     public function __construct(MtnConfig $config)
     { 
         parent::__construct();
+ 
+        $this->setConfig($config);
+    }
+    
 
-        $this->config = $config;
+    public function setConfig(MtnConfig $config)
+    {
+        $this->config = $config; 
+
+        return $this;
     }
 
     /**
@@ -26,28 +34,26 @@ class MtnMomo extends GuzzleClient
      *
      * @return string The OAuth Token.
      */
-    public function getToken()
+    public function getToken($product = 'collection')
     {
  
-        // $url = $this->_baseUrl . '/collection/token/';
+        $url = $this->config->baseUrl . "/{$product}/token/";
+
+        $this->config->validate($product);
+ 
+        $encodedString = base64_encode(
+            $this->config->collectionUserId . ':' . $this->config->collectionApiSecret
+        );
+        $headers = [
+            'Authorization' => 'Basic ' . $encodedString,
+            'Content-Type' => 'application/json',
+            'Ocp-Apim-Subscription-Key' => $this->config->collectionPrimaryKey
+        ];
 
 
-        // $encodedString = base64_encode(
-        //     MomoApi::getCollectionUserId() . ':' . MomoApi::getCollectionApiSecret()
-        // );
-        // $headers = [
-        //     'Authorization' => 'Basic ' . $encodedString,
-        //     'Content-Type' => 'application/json',
-        //     'Ocp-Apim-Subscription-Key' => MomoApi::getCollectionPrimaryKey()
-        // ];
-
-
-        // $response = self::request('post', $url, $params, $headers);
-
-
-        // $obj = ResourceFactory::accessTokenFromJson($response->json);
-
-        // return $obj;
+        $response = $this->request('post', $url, $params = [], $headers);
+ 
+        return $response->json();
     }
     
 }

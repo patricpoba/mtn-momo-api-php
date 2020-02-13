@@ -5,7 +5,7 @@ namespace PatricPoba\MtnMomo\Http;
 use PatricPoba\MtnMomo\Utilities\AttributesMassAssignable;
   
 
-class Response
+class ApiResponse
 {
     use AttributesMassAssignable;
     
@@ -31,14 +31,14 @@ class Response
          * eg $response->category, $response->user_id for ['category'=> 'Electronics','user_id'=> 4]
          * $this->content must be set before calling $this->massAssignAttributes()
          */
-        $this->massAssignAttributes($this->getContent());
+        $this->massAssignAttributes($this->toArray());
     }
 
     /**
      * Get array format of api response
      * @return array
      */
-    public function array()
+    public function toArray()
     {
         return \json_decode($this->content, true);
     }
@@ -47,9 +47,9 @@ class Response
      * Get json format of api response
      * @return string
      */
-    public function json()
+    public function toJson()
     {
-        return \json_decode($this->content, true);
+        return $this->content;
     }
 
     /**

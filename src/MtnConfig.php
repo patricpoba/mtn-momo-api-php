@@ -70,9 +70,9 @@ class MtnConfig
      * @param array $configs
      * @return void
      */
-    public function __construct($configs)
+    public function __construct($configArray)
     {
-        $this->massAssignAttributes($configs);
+        $this->massAssignAttributes($configArray);
     }
 
     /**
@@ -97,6 +97,8 @@ class MtnConfig
         if( ! empty($missingCredentials)){
             throw new CredentialsNotSetException("The followig credentials are missing: " . implode(', ', $missingCredentials) ); 
         } 
+
+        return $this;
     }
 
     /**

@@ -1,8 +1,7 @@
 #!/usr/bin/php
 <?php
 namespace PatricPoba\MtnMomo;
- 
-
+  
 class SandboxUserProvision
 {
     /**
@@ -37,7 +36,7 @@ class SandboxUserProvision
 
         $url = 'https://sandbox.momodeveloper.mtn.com/v1_0/apiuser';
 
-        $token = static::uuid();
+        echo $token = static::uuid();
         $ch = curl_init();
 
         $userUrl = "https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/" . $token . "/apikey";
@@ -93,6 +92,7 @@ class SandboxUserProvision
             echo "Your User Id and API secret : {UserId:" . $token . " , APISecret: " . $res["apiKey"] . " }";
         }
         else{
+            var_dump($result);
             echo "something went wrong";
         }
     }

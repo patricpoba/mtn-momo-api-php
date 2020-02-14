@@ -26,8 +26,10 @@ class GuzzleClient implements HttpClientInterface
     {
         if ($client) {
             $this->client = $client;
+            return ;
         }
-        $this->client = new Client(); 
+        
+        $this->client = new Client(); // 4 seconds
     }
  
     /**
@@ -43,8 +45,7 @@ class GuzzleClient implements HttpClientInterface
     {
         try {
             $response = $this->client->send(
-                new Request($method, $url, $headers),
-                ['query' => $params, 'json' => $params]
+                new Request($method, $url, $headers), ['json' => $params]
             );
         } catch (\Exception $exception) {
             throw new MtnMomoException('HTTP request failed: ' . $url, 0, $exception);

@@ -1,6 +1,11 @@
 #!/usr/bin/php
 <?php
 namespace PatricPoba\MtnMomo;
+
+require_once 'vendor/autoload.php';
+
+use PatricPoba\MtnMomo\Http\GuzzleClient;
+
   
 class SandboxUserProvision
 {
@@ -24,13 +29,17 @@ class SandboxUserProvision
         );
     }
     
-    public function provisionUser()
+    public function provisionUser($host = null, $apiKey = null)
     {
-        echo 'providerCallbackHost:';
-        $host = fgets(STDIN);
+        if (is_null($host)) {
+            echo 'providerCallbackHost:';
+            $host = fgets(STDIN); 
+        }
 
-        echo 'Ocp-Apim-Subscription-Key: ';
-        $apiKey = fgets(STDIN);
+        if (is_null($apiKey)) {
+            echo 'Ocp-Apim-Subscription-Key: ';
+            $apiKey = fgets(STDIN); 
+        }
 
         $data = json_encode(array("providerCallbackHost" => trim($host)));
 
@@ -96,8 +105,59 @@ class SandboxUserProvision
             echo "something went wrong";
         }
     }
+
+
+    public function provisionSandboxUser( $primaryKey = null, $providerCallbackHost = null, $xReferenceId = null)
+    {
+        if (is_null($primaryKey)) {
+            echo 'Ocp-Apim-Subscription-Key (primaryKey) : ';
+            $primaryKey = fgets(STDIN);
+        }
+
+        if (is_null($providerCallbackHost)) {
+            echo 'providerCallbackHost (callback domain) : ';
+            $providerCallbackHost = fgets(STDIN);
+        }
+
+        if (is_null($xReferenceId) ){
+            $xReferenceId = static::uuid(); 
+        }
+ 
+        $headers = [
+            'X-Reference-Id'            =>  $xReferenceId,
+            'Content-Type'              => 'application/json',
+            'Ocp-Apim-Subscription-Key' => $primaryKey,
+        ];
+        $params = [ 'providerCallbackHost' => $providerCallbackHost ];
+   
+        try {
+            // Create a sandbox user
+            $response = (new GuzzleClient())
+                ->request('post', 'https://sandbox.momodeveloper.mtn.com/v1_0/apiuser', $params, $headers);
+            var_dump($response);
+    
+            // Create an apiKey
+            // $response = (new GuzzleClient())
+                // ->request('post', 'https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/'. $xReferenceId . '/apikey', [], $headers);
+
+            // echo "Your credentials: { Ocp-Apim-Subscription-Key: {$primaryKey} , UserId (X-Reference-Id): " . $xReferenceId . " , APISecret: " . $response->apiKey  .' }';
+
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            throw $exception;
+            return;
+        } 
+    }
 }
 if (!debug_backtrace()) {
-    $provision = new SandboxUserProvision();
-    $provision->provisionUser();
+    // $provision = new SandboxUserProvision();
+    // $provision->provisionUser();
+
+    (new SandboxUserProvision)->provisionSandboxUser('7f4c5b93d101446faad39e0eb1eb932c', 'afdf.dsfdfda.com');
+
+    // echo $uuid = SandboxUserProvision::uuid() ;
+    
+    // echo ' count:' . strlen($uuid);
+    // var_dump($uuid);
 }
+

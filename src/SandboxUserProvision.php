@@ -80,7 +80,8 @@ class SandboxUserProvision
             echo "Your Sandbox credentials : \n";
             echo "Ocp-Apim-Subscription-Key: {$primaryKey} \n" ;
             echo "UserId (X-Reference-Id)  : {$xReferenceId} \n" ;
-            echo "APISecret                : {$response->apiKey} \n" ; 
+            echo "ApiKey (ApiSecret)       : {$response->apiKey} \n" ; 
+            echo "Callback host            : {$providerCallbackHost} \n" ; 
 
         } catch (\Exception $exception) { 
             throw $exception; 

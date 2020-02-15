@@ -2,6 +2,8 @@
 
 namespace PatricPoba\MtnMomo;
   
+use GuzzleHttp\ClientInterface;
+use PatricPoba\MtnMomo\Exceptions\MtnMomoException;
 use PatricPoba\MtnMomo\MtnConfig;
 use PatricPoba\MtnMomo\Http\GuzzleClient;
 
@@ -14,9 +16,9 @@ class MtnMomo extends GuzzleClient
 
  
 
-    public function __construct(MtnConfig $config)
+    public function __construct(MtnConfig $config, ClientInterface $client = null)
     { 
-        parent::__construct();
+        parent::__construct($client);
  
         $this->setConfig($config);
     }
@@ -52,8 +54,13 @@ class MtnMomo extends GuzzleClient
 
 
         $response = $this->request('post', $url, $params = [], $headers);
- 
-        return $response->json();
+        // { access_token: "eyJ0eXAi7MRHUfMHikzQNBPAwZ2dVaIVrUgrbhiUb10A", token_type: "access_token", expires_in: 3600 }
+
+        if ( ! $response->isSuccess() ) {
+            throw new MtnMomoException("Error in getting token: {$url}");
+        }
+
+        return $response->access_token;
     }
     
 }

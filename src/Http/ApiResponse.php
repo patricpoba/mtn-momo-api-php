@@ -64,6 +64,14 @@ class ApiResponse
     {
         return $this->headers;
     }
+
+    /**
+     * return bool
+     */
+    public function isSuccess() 
+    {
+        return $this->getStatusCode() < 400;
+    }
  
 
     public function __toString()

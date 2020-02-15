@@ -29,7 +29,7 @@ class GuzzleClient implements HttpClientInterface
             return ;
         }
         
-        $this->client = new Client(); // 4 seconds
+        $this->client = new Client(['http_errors' => false]); // 4 seconds
     }
  
     /**

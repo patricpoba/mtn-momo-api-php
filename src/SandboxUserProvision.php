@@ -72,15 +72,23 @@ class SandboxUserProvision
             // Create a sandbox user
             $response = (new GuzzleClient())
                 ->request('post', 'https://sandbox.momodeveloper.mtn.com/v1_0/apiuser', $params, $headers);
-             
+
+            if (! $response->isSuccess()) {
+                exit($response);
+            }
+ 
             // Create an apiKey
             $response = (new GuzzleClient())
                 ->request('post', 'https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/'. $xReferenceId . '/apikey', [], $headers);
 
+            if ( ! $response->isSuccess()) {
+                exit($response); 
+            }
+
             echo "Your Sandbox credentials : \n";
             echo "Ocp-Apim-Subscription-Key: {$primaryKey} \n" ;
-            echo "UserId (X-Reference-Id)  : {$xReferenceId} \n" ;
-            echo "ApiKey (ApiSecret)       : {$response->apiKey} \n" ; 
+            echo "UserId (X-Reference-Id)  : {$xReferenceId} \n" ; 
+            echo "ApiKey (ApiSecret)       : {$response->apiKey} \n" ;  
             echo "Callback host            : {$providerCallbackHost} \n" ; 
 
         } catch (\Exception $exception) { 

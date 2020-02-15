@@ -3,6 +3,7 @@
 namespace PatricPoba\MtnMomo;
  
 use PatricPoba\MtnMomo\Exceptions\CredentialsNotSetException;
+use PatricPoba\MtnMomo\Exceptions\WrongProductException;
 use PatricPoba\MtnMomo\Utilities\AttributesMassAssignable;
 
 class MtnConfig 
@@ -23,7 +24,14 @@ class MtnConfig
      * @var string The MTN OpenApi currency
      */
     public $currency;
+ 
+    /**
+     * @var string The MTN product suscribed to.
+     * collection|disbursement|remittance
+     */
+    public $product;
 
+    const PRODUCTS = ['collection', 'disbursement', 'remittance'];
 
     /**
      * @var string The MTN OpenApi collections credentials
@@ -85,6 +93,10 @@ class MtnConfig
      */ 
     public function validate($product)
     { 
+        if (! in_array($product, $products =  static::PRODUCTS) ) {
+            throw new WrongProductException("Wrong product chosen. product must be " . implode(' or ', $products));
+        }
+
         $missingCredentials = [];
          
         foreach ($this->requiredConfigs($product) as $config) {

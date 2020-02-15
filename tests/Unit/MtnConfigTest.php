@@ -5,6 +5,7 @@ namespace Patricpoba\MtnMomo\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use PatricPoba\MtnMomo\MtnConfig; 
 use PatricPoba\MtnMomo\Exceptions\CredentialsNotSetException;
+use PatricPoba\MtnMomo\Exceptions\WrongProductException;
 
 class MtnConfigTest extends TestCase
 {
@@ -16,6 +17,31 @@ class MtnConfigTest extends TestCase
         $config = new MtnConfig([]);
         
         $config->validate('collection'); 
+    }
+ 
+    /** @test */ 
+    public function config_throws_exception_if_product_is_wrong()
+    {
+        $this->expectException(WrongProductException::class); 
+         
+        $config = new MtnConfig([]);
+        
+        $config->validate('wrongProduct'); 
+    }
+ 
+    /** @test */ 
+    public function config_validates_without_exception_if_product_and_its_credentials_are_set()
+    {   
+        $config = new MtnConfig([
+            'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com/', 
+            'currency'              => 'GHS', 
+            'targetEnvironment'     => 'sandbox', 
+            "collectionApiSecret"  => substr(md5(mt_rand()), 0, 9), 
+            "collectionPrimaryKey" => substr(md5(mt_rand()), 0, 9), 
+            "collectionUserId"     => substr(md5(mt_rand()), 0, 9)
+       ]);
+          
+        $this->assertSame( $config->validate('collection'), $config);
     }
 
 

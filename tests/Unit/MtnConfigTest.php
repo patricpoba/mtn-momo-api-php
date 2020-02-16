@@ -4,15 +4,30 @@ namespace Patricpoba\MtnMomo\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use PatricPoba\MtnMomo\MtnConfig; 
-use PatricPoba\MtnMomo\Exceptions\CredentialsNotSetException;
+use PatricPoba\MtnMomo\Exceptions\MtnConfigException;
 use PatricPoba\MtnMomo\Exceptions\WrongProductException;
 
 class MtnConfigTest extends TestCase
 {
-     
-    public function test_config_throws_exception_if_any_config_is_missing()
+    protected $configArray;
+
+
+    public function setUp()
+    { 
+        $this->configArray = [
+            'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com/',
+            'currency'              => 'EUR',
+            'targetEnvironment'     => 'sandbox',
+            "collectionApiSecret"  => substr(md5(mt_rand()), 0, 9),
+            "collectionPrimaryKey" => substr(md5(mt_rand()), 0, 9),
+            "collectionUserId"     => substr(md5(mt_rand()), 0, 9)
+       ];
+    }
+
+    /** @test */   
+    public function config_throws_exception_if_any_config_is_missing()
     {
-        $this->expectException(CredentialsNotSetException::class); 
+        $this->expectException(MtnConfigException::class); 
         
         $config = new MtnConfig([]);
         
@@ -31,43 +46,47 @@ class MtnConfigTest extends TestCase
  
     /** @test */ 
     public function config_validates_without_exception_if_product_and_its_credentials_are_set()
-    {   
-        $config = new MtnConfig([
-            'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com/', 
-            'currency'              => 'GHS', 
-            'targetEnvironment'     => 'sandbox', 
-            "collectionApiSecret"  => substr(md5(mt_rand()), 0, 9), 
-            "collectionPrimaryKey" => substr(md5(mt_rand()), 0, 9), 
-            "collectionUserId"     => substr(md5(mt_rand()), 0, 9)
-       ]);
-          
-        $this->assertSame( $config->validate('collection'), $config);
+    {    
+        $config = new MtnConfig($this->configArray);
+
+        $this->assertSame($config, $config->validate('collection'));
     }
 
-
-    public function test_config_can_be_instantiated_without_errors_with_valid_arguments()
+    /** @test */ 
+    public function config_can_be_instantiated_without_errors_with_valid_arguments()
     {  
        $product = 'collection';
-
-       $configArray = [
-            'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com/', 
-            'currency'              => 'GHS', 
-            'targetEnvironment'     => 'sandbox', 
-            "{$product}ApiSecret"  => substr(md5(mt_rand()), 0, 9), 
-            "{$product}PrimaryKey" => substr(md5(mt_rand()), 0, 9), 
-            "{$product}UserId"     => substr(md5(mt_rand()), 0, 9)
-       ];
-
-        $config = new MtnConfig($configArray);
+ 
+        $config = new MtnConfig($this->configArray);
         
         $config->validate($product); 
 
-        $this->assertSame($config->baseUrl                  , $configArray['baseUrl']);
-        $this->assertSame($config->currency                 , $configArray['currency']);
-        $this->assertSame($config->targetEnvironment        , $configArray['targetEnvironment']);
-        $this->assertSame($config->{"{$product}ApiSecret"}  , $configArray["{$product}ApiSecret"]);
-        $this->assertSame($config->{"{$product}PrimaryKey"} , $configArray["{$product}PrimaryKey"]);
-        $this->assertSame($config->{"{$product}UserId"}     , $configArray["{$product}UserId"]);
+        $this->assertSame( $this->configArray['baseUrl']              , $config->baseUrl);
+        $this->assertSame( $this->configArray['currency']             , $config->currency);
+        $this->assertSame( $this->configArray['targetEnvironment']    , $config->targetEnvironment);
+        $this->assertSame( $this->configArray["{$product}ApiSecret"]  , $config->{"{$product}ApiSecret"});
+        $this->assertSame( $this->configArray["{$product}PrimaryKey"] , $config->{"{$product}PrimaryKey"});
+        $this->assertSame( $this->configArray["{$product}UserId"]     , $config->{"{$product}UserId"});
+    }
+
+    /** @test */
+    public function get_value_returns_config_value()
+    { 
+        $config = new MtnConfig($this->configArray);
+
+        $this->assertSame($this->configArray['collectionPrimaryKey'] , $config->getValue('collection', 'PrimaryKey') );
+        $this->assertSame($this->configArray['collectionApiSecret']  , $config->getValue('collection', 'ApiSecret') ); 
+        $this->assertSame($this->configArray['collectionUserId']     , $config->getValue('collection', 'UserId') );
+    }
+
+    /** @test */
+    public function get_value_function_throws_exception_if_params_are_wrong()
+    {
+        $this->expectException(MtnConfigException::class);
+        
+        $config = new MtnConfig($this->configArray); 
+        
+        $config->getValue('collection', 'wrongProductConfig');
     }
  
 }

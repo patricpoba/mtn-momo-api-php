@@ -2,7 +2,7 @@
 
 namespace PatricPoba\MtnMomo;
  
-use PatricPoba\MtnMomo\Exceptions\CredentialsNotSetException;
+use PatricPoba\MtnMomo\Exceptions\MtnConfigException;
 use PatricPoba\MtnMomo\Exceptions\WrongProductException;
 use PatricPoba\MtnMomo\Utilities\AttributesMassAssignable;
 
@@ -107,7 +107,7 @@ class MtnConfig
         }
 
         if( ! empty($missingCredentials)){
-            throw new CredentialsNotSetException("The followig credentials are missing: " . implode(', ', $missingCredentials) ); 
+            throw new MtnConfigException("The followig credentials are missing: " . implode(', ', $missingCredentials) ); 
         } 
 
         return $this;
@@ -129,5 +129,25 @@ class MtnConfig
             $product . 'PrimaryKey', 
             $product . 'UserId'
         ];
+    }
+
+    /**
+     * Get specific config dynamicsally
+     *
+     * @param string $product 'collection'|'disbursement'|'remittance'
+     * @param string $configKey 'primaryKey' | 'ApiSecret' | 'UserId'
+     * $throws PatricPoba\MtnMomo\Exceptions\MtnConfigException\MtnConfigException
+     * @return string
+     */
+    public function getValue($product, $configKey)
+    {
+        // if $product = 'collection' and $configKey= 'primaryKey', $configKey = 'collectionPrimaryKey' 
+        $configKey = strtolower($product) . ucfirst($configKey);
+
+       if ( ! isset($this->$configKey)) {
+           throw new MtnConfigException($configKey . " does not exist or is empty on this {static::class} instance") ;
+       }
+
+       return $this->$configKey;
     }
 }

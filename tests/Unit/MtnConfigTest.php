@@ -15,7 +15,7 @@ class MtnConfigTest extends TestCase
     public function setUp()
     { 
         $this->configArray = [
-            'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com/',
+            'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com',
             'currency'              => 'EUR',
             'targetEnvironment'     => 'sandbox',
             "collectionApiSecret"  => substr(md5(mt_rand()), 0, 9),

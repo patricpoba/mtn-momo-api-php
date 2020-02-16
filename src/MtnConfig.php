@@ -145,7 +145,7 @@ class MtnConfig
         $configKey = strtolower($product) . ucfirst($configKey);
 
        if ( ! isset($this->$configKey)) {
-           throw new MtnConfigException($configKey . " does not exist or is empty on this {static::class} instance") ;
+           throw new MtnConfigException($configKey . " does not exist or is empty on this " . static::class . " instance") ;
        }
 
        return $this->$configKey;

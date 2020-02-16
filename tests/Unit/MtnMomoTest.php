@@ -37,7 +37,7 @@ class MtnMomoTest extends TestCase
         // $this->get_token_response = new Response(200, [], $getTokenResponse);
 
         $this->config = new MtnConfig([
-            'baseUrl'              => 'https://sandbox.momodeveloper.mtn.com/',
+            'baseUrl'              => 'https://sandbox.momodeveloper.mtn.com',
             'currency'              => 'EUR',
             'targetEnvironment'     => 'sandbox',
             "collectionApiSecret"   => '3463953c31064e6e8ae634cd94f13c8c',
@@ -57,12 +57,10 @@ class MtnMomoTest extends TestCase
         $this->mockHandler->append(
             new Response(200, [], '{"access_token": "eyJ0JKV1Q2In0...","token_type": "access_token", "expires_in": 3600}')
         );
-
-        $mtnMomo = new MtnMomo($this->config,  $this->client);
-       
-        echo $token =  $mtnMomo->getToken();
          
-        $this->assertSame('eyJ0JKV1Q2In0...', $token);
+        $mtnMomo = new MtnMomo($this->config,  $this->client);
+         
+        $this->assertSame('eyJ0JKV1Q2In0...', $mtnMomo->getToken());
     }
 
 

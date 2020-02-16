@@ -8,12 +8,12 @@ class MtnDisbursement extends MtnMomo
 {
     const PRODUCT = 'disbursement';
 
-    
+
     protected function requestUrl($endpointName, $params = []) : string
     { 
         switch ($endpointName) {
             case 'token':  
-                $urlSegment = '/disbursement/token' ;
+                $urlSegment = '/disbursement/token/' ;
                 break;
 
             case 'postTransaction': 

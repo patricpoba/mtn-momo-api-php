@@ -13,7 +13,7 @@ class MtnCollection extends MtnMomo
     { 
         switch ($endpointName) {
             case 'token':  
-                $urlSegment = '/collection/token' ;
+                $urlSegment = '/collection/token/' ;
                 break;
 
             case 'postTransaction': 

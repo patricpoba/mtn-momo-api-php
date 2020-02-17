@@ -68,7 +68,7 @@ class ApiResponse
     /**
      * return bool
      */
-    public function isSuccess() 
+    public function isSuccess() : bool
     {
         return $this->getStatusCode() < 400;
     }

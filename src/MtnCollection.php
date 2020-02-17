@@ -16,7 +16,7 @@ class MtnCollection extends MtnMomo
                 $urlSegment = '/collection/token/' ;
                 break;
 
-            case 'postTransaction': 
+            case 'createTransaction': 
                 $urlSegment = '/collection/v1_0/requesttopay';
                 break;
                  
@@ -28,7 +28,7 @@ class MtnCollection extends MtnMomo
                 $urlSegment = '/collection/v1_0/account/balance';
                 break;
  
-            case 'accountholder': 
+            case 'accountholderActive': 
                 $urlSegment = "/collection/v1_0/accountholder/{$params['accountHolderIdType']}/{$params['accountHolderId']}/active";
                 break;
             

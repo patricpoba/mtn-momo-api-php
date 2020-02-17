@@ -7,13 +7,13 @@ use PatricPoba\MtnMomo\Exceptions\MtnMomoException;
 class MtnCollection extends MtnMomo 
 {
     const PRODUCT = 'collection';
+ 
 
-
-    protected function requestUrl($endpointName, $params = []) : string
+    protected function requestUrl($endpointName, array $params = []) : string
     { 
         switch ($endpointName) {
             case 'token':  
-                $urlSegment = '/collection/token/' ;
+                $urlSegment = '/collection/token/' ; // trailing slash mandatory
                 break;
 
             case 'createTransaction': 
@@ -29,7 +29,7 @@ class MtnCollection extends MtnMomo
                 break;
  
             case 'accountholderActive': 
-                $urlSegment = "/collection/v1_0/accountholder/{$params['accountHolderIdType']}/{$params['accountHolderId']}/active";
+                $urlSegment = "/collection/v1_0/accountholder/MSISDN/{$params['accountHolderId']}/active";
                 break;
             
             default:
@@ -38,6 +38,12 @@ class MtnCollection extends MtnMomo
         }
  
         return $this->config->baseUrl . $urlSegment;
+    }
+ 
+   
+    public function requestToPay(array $data, string $transactionUuid = null)
+    {
+        return parent::createTransaction($data, $transactionUuid);
     }
 
 }

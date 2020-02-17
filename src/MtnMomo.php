@@ -16,7 +16,7 @@ abstract class MtnMomo extends GuzzleClient
      * @var string the base url of the API 
      */ 
     const VERSION = '0.1';
-
+ 
     /**
      * Current product, would be overriden by the child classes
      * Example: 'collection', 'disbursement', 'remittance'
@@ -83,7 +83,7 @@ abstract class MtnMomo extends GuzzleClient
     }
 
 
-    public function getTransaction(string $trasactionId)
+    public function getTransaction(string $transactionId)
     {
         $headers = [
             'Authorization'             => 'Bearer ' . $this->getToken() ,
@@ -91,42 +91,33 @@ abstract class MtnMomo extends GuzzleClient
             "X-Target-Environment"      => $this->config->targetEnvironment,
             'Ocp-Apim-Subscription-Key' => $this->config->getValue(static::PRODUCT, 'primaryKey')
         ];
-   
-        return $this->request('get', $this->requestUrl('getTransaction'), $params = [], $headers);
-    }
+        
+        $url = $this->requestUrl('getTransaction', ['referenceId'=> $transactionId]);
 
-
-    public function accountHolderActive($mobileNumber)
-    {
-        $headers = [
-            'Authorization'             => 'Bearer ' . $this->getToken() ,
-            'Content-Type'              => 'application/json',
-            "X-Target-Environment"      => $this->config->targetEnvironment,
-            'Ocp-Apim-Subscription-Key' => $this->config->getValue(static::PRODUCT, 'primaryKey')
-        ];
-  
-        return $this->request('get', $this->requestUrl('accountholderActive', $mobileNumber), $params = [], $headers);
+        return $this->request('get', $url, $params = [], $headers);
     }
  
     /**
-     * Undocumented function
+     * Make a requestToPay (collection product) or transfer (disbursement product) or transfer (remittance product)
      *
-     * @param array $params amount, mobileNumber,payeeNote,payerMessage,externalId
+     * @param array $params amount, mobileNumber,payeeNote,payerMessage,externalId, callbackUrl*
      * @param string $transactionUuid
-     * @return void
+     * @throws \Exception
+     * @return mixed string | PatricPoba\MtnMomo\Http\ApiReponse
      */
-    public function createTransaction(array $params, string $transactionUuid = null)
+    public function createTransaction(array $data, string $transactionUuid = null)
     {
         $params = [
-            "amount"            => $params['amount'],
-            "currency"          => $params['currency'] ?? $this->config->currency,
-            "externalId"        => $params['externalId'],
-            "payee" => [
-                "partyIdType"   => 'MSISDN',
-                "partyId"       => $params['mobileNumber']
-            ],
-            "payerMessage"      => $params['payerMessage'],
-            "payeeNote"         => $params['payeeNote']
+            "amount"            => $data['amount'],
+            "currency"          => $data['currency'] ?? $this->config->currency,
+            "externalId"        => $data['externalId'], 
+            /** key can be either "payee" or payer depending on the product */
+            (static::PRODUCT === 'collection' ? 'payer' : 'payee') => [
+                "partyIdType"   => $data['partyIdType'] ?? 'MSISDN',
+                "partyId"       => $data['mobileNumber']
+            ], 
+            "payerMessage"      => $data['payerMessage'],
+            "payeeNote"         => $data['payeeNote']
         ];
 
         $transactionUuid = $transactionUuid ?? static::uuid();
@@ -138,10 +129,34 @@ abstract class MtnMomo extends GuzzleClient
             'Ocp-Apim-Subscription-Key' => $this->config->getValue(static::PRODUCT, 'primaryKey'), 
             "X-Reference-Id"            => $transactionUuid
         ];
-  
-        $response = $this->request('get', $this->requestUrl('createTransaction'), $params, $headers);
+
+        if ( isset($data['callbackUrl']) ) {
+            $headers['X-Callback-Url'] = $params['callbackUrl']; 
+        }
+
+        $response = $this->request('post', $this->requestUrl('createTransaction'), $params, $headers);
  
         return $response->isSuccess() ? $transactionUuid : $response;
+    }
+ 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $mobileNumber
+     * @return void
+     */
+    public function accountHolderActive($mobileNumber)
+    {
+        $headers = [
+            'Authorization'             => 'Bearer ' . $this->getToken() ,
+            'Content-Type'              => 'application/json',
+            "X-Target-Environment"      => $this->config->targetEnvironment,
+            'Ocp-Apim-Subscription-Key' => $this->config->getValue(static::PRODUCT, 'primaryKey')
+        ];
+
+        $url = $this->requestUrl('accountholderActive', ['accountHolderId'=> $mobileNumber]) ;
+  
+        return $this->request('get', $url, $params = [], $headers);
     }
     
     

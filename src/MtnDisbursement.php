@@ -13,7 +13,7 @@ class MtnDisbursement extends MtnMomo
     { 
         switch ($endpointName) {
             case 'token':  
-                $urlSegment = '/disbursement/token/' ;
+                $urlSegment = '/disbursement/token/' ; // trailing slash mandatory
                 break;
 
             case 'postTransaction': 
@@ -29,7 +29,7 @@ class MtnDisbursement extends MtnMomo
                 break;
  
             case 'accountholder': 
-                $urlSegment = "/disbursement/v1_0/accountholder/{$params['accountHolderIdType']}/{$params['accountHolderId']}/active";
+                $urlSegment = "/disbursement/v1_0/accountholder/MSISDN/{$params['accountHolderId']}/active";
                 break;
             
             default:
@@ -38,6 +38,11 @@ class MtnDisbursement extends MtnMomo
         }
  
         return $this->config->baseUrl . $urlSegment;
+    }
+
+    public function transfer(array $params, string $transactionUuid = null)
+    {
+        return parent::createTransaction($params, $transactionUuid);
     }
     
 }

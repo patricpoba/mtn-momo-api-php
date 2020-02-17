@@ -93,8 +93,8 @@ class MtnConfig
      */ 
     public function validate($product)
     { 
-        if (! in_array($product, $products =  static::PRODUCTS) ) {
-            throw new WrongProductException("Wrong product chosen. product must be " . implode(' or ', $products));
+        if (! in_array($product, static::PRODUCTS) ) {
+            throw new WrongProductException("Wrong product chosen. product must be " . implode(' or ', static::PRODUCTS));
         }
 
         $missingCredentials = [];

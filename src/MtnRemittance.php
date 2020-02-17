@@ -28,8 +28,9 @@ class MtnRemittance extends MtnMomo
                 $urlSegment = '/remittance/v1_0/account/balance';
                 break;
  
-            case 'accountholder': 
-                $urlSegment = "/remittance/v1_0/accountholder/{$params['accountHolderIdType']}/{$params['accountHolderId']}/active";
+            case 'accountholder':
+                $accountHolderIdType = $params['accountHolderIdType'] ?? 'MSISDN';
+                $urlSegment = "/remittance/v1_0/accountholder/{$accountHolderIdType}/{$params['accountHolderId']}/active";
                 break;
             
             default:
@@ -38,5 +39,10 @@ class MtnRemittance extends MtnMomo
         }
  
         return $this->config->baseUrl . $urlSegment;
+    }
+
+    public function transfer(array $params, string $transactionUuid = null)
+    {
+        return parent::createTransaction($params, $transactionUuid);
     }
 }

@@ -40,6 +40,106 @@ ApiKey (ApiSecret)       : 46b9302a8ae444c8a7a956bb4c7f2c05
 Callback host            : https://yourdomain.com
 ```
 
+
+## Configuration
+
+We have to setup up the package to utilise the our momodeveloper credentials by creating an instance of the `MtnConfig`
+and pass it to the constructor of the class of the product (collection, disbursement or remittance) we want to use as 
+demonstrated below. The configuration can be overriden a product instance by calling the  `->setConfig($config)` method and passing the new config instance.
+ 
+
+
+```php
+use PatricPoba\MtnMomo;
+
+ 
+$config = new MtnConfig([ 
+    // mandatory credentials
+    'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com', 
+    'currency'              => 'EUR', 
+    'targetEnvironment'     => 'sandbox', 
+
+    // product specific blocks
+    "collectionApiSecret"   => '3463953c31064e6e8ae634cd94f13c8c', 
+    "collectionPrimaryKey"  => 'aadb6f286e95415db9024c7a4e2c6025', 
+    "collectionUserId"      => 'b4d4019f-8617-4843-a4b8-ed90941747a3',
+ 
+    "disbursementApiSecret" => '3463953c31064e6e8ae634cd94f13c8c', 
+    "disbursementPrimaryKey"=> 'aadb6f286e95415db9024c7a4e2c6025', 
+    "disbursementUserId"    => 'b4d4019f-8617-4843-a4b8-ed90941747a3',
+ 
+    "remittanceApiSecret"   => '3463953c31064e6e8ae634cd94f13c8c', 
+    "remittancePrimaryKey"  => 'aadb6f286e95415db9024c7a4e2c6025', 
+    "remittanceUserId"      => 'b4d4019f-8617-4843-a4b8-ed90941747a3'
+]);
+```
+
+
+## Collection
+ 
+Collections is used for requesting a payment from a customer (Payer) and checking status of transactions.
+[Read more on Momo Collection](https://momodeveloper.mtn.com/docs/services/collection/operations/requesttopay-POST)
+ 
+
+
+```php
+use PatricPoba\MtnMomo;
+
+ 
+$config = new MtnConfig([ 
+    // mandatory credentials
+    'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com', 
+    'currency'              => 'EUR', 
+    'targetEnvironment'     => 'sandbox', 
+
+    // collection credentials
+    "collectionApiSecret"   => '3463953c31064e6e8ae634cd94f13c8c', 
+    "collectionPrimaryKey"  => 'aadb6f286e95415db9024c7a4e2c6025', 
+    "collectionUserId"      => 'b4d4019f-8617-4843-a4b8-ed90941747a3'
+]);
+
+
+$collection = new MtnCollection($config); 
+
+$params = [
+    "mobileNumber"      => '0546861073', 
+    "amount"            => '100', 
+    "externalId"        => '774747234',
+    "payerMessage"      => 'some note',
+    "payeeNote"         => '1212'
+];
+
+$transactionId = $collection->requestToPay($params);
+
+$transaction = $collection->getTransaction($transactionId);
+```
+
+### Collection Methods
+
+1. `requestToPay`: This operation is used to request a payment from a consumer (Payer). The payer will be asked to authorize the payment. The transaction is executed once the payer has authorized the payment. The transaction will be in status PENDING until it is authorized or declined by the payer or it is timed out by the system. Status of the transaction can be validated by checking the `status` field on the result of `getTransaction()` method.
+
+```php
+   $transactionId = $collection->requestToPay($params);
+```
+
+2. `getTransaction`: Retrieve transaction information using the `transactionId` returned by `requestToPay`. You can invoke it at intervals until the transaction fails or succeeds. 
+
+```php
+   $transaction = $collection->getTransaction($transactionId);
+```
+
+3. `getBalance`: Get the balance of the account.
+
+```php
+   $transaction = $collection->getBalance();
+```
+
+4. `accountHolderActive`: check if an account holder is registered and active in the system.
+
+```php
+   $transaction = $collection->accountHolderActive($mobileNumber);
+```
+
  
 ### Testing
 

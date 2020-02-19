@@ -38,7 +38,7 @@ class ApiResponse
      * Get array format of api response
      * @return array
      */
-    public function toArray()
+    public function toArray() : array
     {
         return \json_decode($this->content, true);
     }
@@ -47,15 +47,16 @@ class ApiResponse
      * Get json format of api response
      * @return string
      */
-    public function toJson()
+    public function toJson() : string
     {
         return $this->content;
     }
 
     /**
+     * Get the status code of the response
      * @return numeric
      */
-    public function getStatusCode()
+    public function getStatusCode() : int
     {
         return $this->statusCode;
     }
@@ -66,6 +67,7 @@ class ApiResponse
     }
 
     /**
+     * Checks if api call was successful ie 200, 201 etc
      * return bool
      */
     public function isSuccess() : bool

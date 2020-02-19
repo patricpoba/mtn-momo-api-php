@@ -81,8 +81,8 @@ Collections is used for requesting a payment from a customer (Payer) and checkin
 [Read more on Momo Collection](https://momodeveloper.mtn.com/docs/services/collection/operations/requesttopay-POST)
  
 * `collectionPrimaryKey`: Primary Key for the `Collection` product on the developer portal.
-* `collectionUserId`    : For development environment, use the sandbox credentials else use the one in on the `developer portal`.
-* `collectionApiSecret` : For development environment, use the sandbox credentials else use the one in on the `developer portal`.
+* `collectionUserId`    : For development environment, use the sandbox credentials else use the one on the `developer portal`.
+* `collectionApiSecret` : For development environment, use the sandbox credentials else use the one on the `developer portal`.
 
 
 ```php
@@ -148,8 +148,13 @@ $transaction = $collection->getTransaction($transactionId);
 ## Disbursement
  
 Disbursement is used for transferring money from the provider account to a customer.
-[Read more on Momo Disbursement](https://momodeveloper.mtn.com/docs/services/disbursement/operations/token-POST)
+[Read more on Momo Disbursement](https://momodeveloper.mtn.com/docs/services/disbursement/operations/token-POST) 
  
+* `disbursementPrimaryKey`: Primary Key for the `Disbursement` product on the developer portal.
+* `disbursementUserId`    : For development environment, use the sandbox credentials else use the one on the `developer portal`.
+* `disbursementApiSecret` : For development environment, use the sandbox credentials else use the one on the `developer portal`.
+
+
 
 
 ```php 
@@ -223,7 +228,13 @@ $transaction = $disbursement->getTransaction($transactionId);
 
 
 ## Remittance
- 
+
+Transfer operation is used to transfer an amount from the own account to a payee account.
+
+* `disbursementPrimaryKey`: Primary Key for the `Disbursement` product on the developer portal.
+* `disbursementUserId`    : For development environment, use the sandbox credentials else use the one on the `developer portal`.
+* `disbursementApiSecret` : For development environment, use the sandbox credentials else use the one on the `developer portal`.
+  
  
 ```php 
 use PatricPoba\MtnMomo\MtnConfig;
@@ -255,24 +266,74 @@ $params = [
     "payeeNote"         => '1212'
 ];
 
-/**
- * Transfer() is used to request a payment from a consumer (Payer). The payer will be asked to authorize the payment. The transaction is executed once the payer has authorized the payment. The transaction will be in status PENDING until it is authorized or declined by the payer or it is timed out by the system. 
+/**  
+ * Transfer operation is used to transfer an amount from the own account to a payee account.
+ * Status of the transaction can validated by using the GET /transfer/{referenceId}
  */
 $transactionId = $remittance->transfer($params);
 
+
 /**
- * Status of the transaction can be validated by checking the `status` 
- * field on the result of `getTransaction()` method.
+ * This operation is used to get the status of a transfer. X-Reference-Id 
+ * that was passed in the post is used as reference to the request.
  */
 $transaction = $remittance->getTransaction($transactionId);
-```
+  
+  
+/**
+ * Get the balance of your disbursement account.
+ */
+$transaction = $disbursement->getBalance();
  
-### Remittance Methods
 
-```php
-The documentation about Remittance methods is same as the disbursement.
- ```
+/**
+ * Operation is used to check if an account holder is registered and active in the system.
+ */
+$transaction = $disbursement->accountHolderActive($mobileNumber);
+
+```
+
  
+### Api Responses
+
+All api calls return the PatricPoba\MtnMomo\Http\ApiResponse object which is described below:
+
+``` bash
+/**
+* Data in api response can also be accessed directly from the object.
+*/
+$response->description // 'description' is in api response.
+
+/**
+* Get array format of api response
+* @return array
+*/
+$response->toArray() 
+
+/**
+* Get json format of api response
+* @return string
+*/
+$response->toJson() 
+
+/**
+* Get the status code of the response
+* @return numeric
+*/
+$response->getStatusCode() 
+
+/**
+* Get the headers the response 
+*/
+$response->getHeaders() 
+
+/**
+* Checks if api call was successful ie 200, 201 etc
+* return bool
+*/
+$response->isSuccess() 
+```
+
 
 ### Testing
 

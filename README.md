@@ -50,7 +50,7 @@ demonstrated below. The configuration can be overriden a product instance by cal
 
 
 ```php
-use PatricPoba\MtnMomo;
+use PatricPoba\MtnMomo\MtnConfig;
 
  
 $config = new MtnConfig([ 
@@ -80,10 +80,13 @@ $config = new MtnConfig([
 Collections is used for requesting a payment from a customer (Payer) and checking status of transactions.
 [Read more on Momo Collection](https://momodeveloper.mtn.com/docs/services/collection/operations/requesttopay-POST)
  
+* `collectionPrimaryKey`: Primary Key for the `Collection` product on the developer portal.
+* `collectionUserId`    : For development environment, use the sandbox credentials else use the one in on the `developer portal`.
+* `collectionApiSecret` : For development environment, use the sandbox credentials else use the one in on the `developer portal`.
 
 
 ```php
-use PatricPoba\MtnMomo;
+use PatricPoba\MtnMomo\MtnConfig;
 
  
 $config = new MtnConfig([ 
@@ -140,7 +143,137 @@ $transaction = $collection->getTransaction($transactionId);
    $transaction = $collection->accountHolderActive($mobileNumber);
 ```
 
+
+
+## Disbursement
  
+Disbursement is used for transferring money from the provider account to a customer.
+[Read more on Momo Disbursement](https://momodeveloper.mtn.com/docs/services/disbursement/operations/token-POST)
+ 
+
+
+```php 
+use PatricPoba\MtnMomo\MtnConfig;
+use PatricPoba\MtnMomo\MtnDisbursement;
+
+ 
+$config = new MtnConfig([ 
+    // mandatory credentials
+    'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com', 
+    'currency'              => 'EUR', 
+    'targetEnvironment'     => 'sandbox', 
+
+    // disbursement credentials
+    "disbursementApiSecret"   => '3463953c31064e6e8ae634cd94f13c8c', 
+    "disbursementPrimaryKey"  => 'aadb6f286e95415db9024c7a4e2c6025', 
+    "disbursementUserId"      => 'b4d4019f-8617-4843-a4b8-ed90941747a3'
+]);
+
+/**
+ * setup disbursement config
+ */
+$disbursement = new MtnDisbursement($config); 
+
+$params = [
+    "mobileNumber"      => '0546861073', 
+    "amount"            => '100', 
+    "externalId"        => '774747234',
+    "payerMessage"      => 'some note',
+    "payeeNote"         => '1212'
+];
+
+/**
+ * Transfer() is used to request a payment from a consumer (Payer). The payer will be asked to authorize the payment. The transaction is executed once the payer has authorized the payment. The transaction will be in status PENDING until it is authorized or declined by the payer or it is timed out by the system. 
+ */
+$transactionId = $disbursement->transfer($params);
+
+/**
+ * Status of the transaction can be validated by checking the `status` 
+ * field on the result of `getTransaction()` method.
+ */
+$transaction = $disbursement->getTransaction($transactionId);
+```
+
+### Disbursement Methods
+
+
+1. `transfer`: This operation is used to request a payment from a consumer (Payer). The payer will be asked to authorize the payment. The transaction is executed once the payer has authorized the payment. The transaction will be in status PENDING until it is authorized or declined by the payer or it is timed out by the system. Status of the transaction can be validated by checking the `status` field on the result of `getTransaction()` method.
+
+```php
+   $transactionId = $disbursement->transfer($params);
+```
+
+2. `getTransaction`: Retrieve transaction information using the `transactionId` returned by `requestToPay`. You can invoke it at intervals until the transaction fails or succeeds. 
+
+```php
+   $transaction = $disbursement->getTransaction($transactionId);
+```
+
+3. `getBalance`: Get the balance of your disbursement account.
+
+```php
+   $transaction = $disbursement->getBalance();
+```
+
+4. `accountHolderActive`: check if an account holder is registered and active in the system.
+
+```php
+   $transaction = $disbursement->accountHolderActive($mobileNumber);
+```
+
+
+## Remittance
+ 
+ 
+```php 
+use PatricPoba\MtnMomo\MtnConfig;
+use PatricPoba\MtnMomo\MtnRemittance;
+
+ 
+$config = new MtnConfig([ 
+    // mandatory credentials
+    'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com', 
+    'currency'              => 'EUR', 
+    'targetEnvironment'     => 'sandbox', 
+
+    // disbursement credentials
+    "remittanceApiSecret"   => '3463953c31064e6e8ae634cd94f13c8c', 
+    "remittancePrimaryKey"  => 'aadb6f286e95415db9024c7a4e2c6025', 
+    "remittanceUserId"      => 'b4d4019f-8617-4843-a4b8-ed90941747a3'
+]);
+
+/**
+ * setup remittance config
+ */
+$remittance = new MtnRemittance($config); 
+
+$params = [
+    "mobileNumber"      => '0546861073', 
+    "amount"            => '100', 
+    "externalId"        => '774747234',
+    "payerMessage"      => 'some note',
+    "payeeNote"         => '1212'
+];
+
+/**
+ * Transfer() is used to request a payment from a consumer (Payer). The payer will be asked to authorize the payment. The transaction is executed once the payer has authorized the payment. The transaction will be in status PENDING until it is authorized or declined by the payer or it is timed out by the system. 
+ */
+$transactionId = $remittance->transfer($params);
+
+/**
+ * Status of the transaction can be validated by checking the `status` 
+ * field on the result of `getTransaction()` method.
+ */
+$transaction = $remittance->getTransaction($transactionId);
+```
+ 
+### Remittance Methods
+
+```php
+The documentation about Remittance methods is same as the disbursement.
+ ```
+ 
+
 ### Testing
 
 ``` bash

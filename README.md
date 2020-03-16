@@ -27,7 +27,7 @@ We need to get the `User ID` and `User Secret` and to do this we shall need to u
 
 ```bash
 ## On the command line, at the root of your project, run 
-$ ./vendor/mtn-momo-api-php/src/SandboxUserProvision.php -k '9cc70894a5d24dba8a8a50fcecbc0568' -c 'https://yourdomain.com' 
+$ php ./vendor/patricpoba/mtn-momo-api-php/src/SandboxUserProvision.php -k '9cc70894a5d24dba8a8a50fcecbc0568' -c 'https://yourdomain.com' 
 ```
 
 The option `c` is your callback host and the option `k` is the primary key or `Ocp-Apim-Subscription-Key` for the specific product to which you are subscribed. The `API Key` is unique to the product and you will need an `API Key` for each product you use. You should get a response similar to the following:

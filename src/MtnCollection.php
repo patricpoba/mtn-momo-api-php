@@ -9,7 +9,7 @@ class MtnCollection extends MtnMomo
     const PRODUCT = 'collection';
  
 
-    protected function requestUrl($endpointName, array $params = []) : string
+    protected function requestUrl(string $endpointName, array $params = []) : string
     { 
         switch ($endpointName) {
             case 'token':  

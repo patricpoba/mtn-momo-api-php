@@ -75,8 +75,7 @@ class MtnConfig
     /**
      * Set values of configs
      *
-     * @param array $configs
-     * @return void
+     * @param array $configArray
      */
     public function __construct($configArray)
     {

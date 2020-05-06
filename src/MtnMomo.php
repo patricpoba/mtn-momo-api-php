@@ -40,8 +40,7 @@ abstract class MtnMomo extends GuzzleClient
     }
 
     /**
-     * @param array|null        $params 
-     *
+     * Get the auth token
      * @return string The OAuth Token.
      */
     public function getToken() : string

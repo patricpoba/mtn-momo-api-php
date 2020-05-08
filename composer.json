@@ -41,5 +41,17 @@
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PatricPoba\\MtnMomo\\MtnMomoServiceProvider"
+            ],
+            "aliases": {
+                "MtnMomoCollection": "PatricPoba\\MtnMomo\\Facades\\MtnCollectionFacade",
+                "MtnMomoRemittance": "PatricPoba\\MtnMomo\\Facades\\MtnRemittanceFacade",
+                "MtnMomoDisbursement": "PatricPoba\\MtnMomo\\Facades\\MtnDisbursementFacade"
+            }
+        }
+    }
 }

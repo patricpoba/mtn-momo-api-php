@@ -128,9 +128,11 @@ abstract class MtnMomo extends GuzzleClient
             'Ocp-Apim-Subscription-Key' => $this->config->getValue(static::PRODUCT, 'primaryKey'), 
             "X-Reference-Id"            => $transactionUuid
         ];
+        
+        $defaultCallbackUrlInEnv = $this->config->getValue(static::PRODUCT, 'callbackUrl');
 
-        if ( isset($data['callbackUrl']) ) {
-            $headers['X-Callback-Url'] = $params['callbackUrl']; 
+        if ( isset($data['callbackUrl']) || is_string($defaultCallbackUrlInEnv) ) {
+            $headers['X-Callback-Url'] = $params['callbackUrl'] ?? $defaultCallbackUrlInEnv; 
         }
 
         $response = $this->request('post', $this->requestUrl('createTransaction'), $params, $headers);

@@ -15,7 +15,7 @@ abstract class MtnMomo extends GuzzleClient
     /**
      * @var string the base url of the API 
      */ 
-    const VERSION = '0.1';
+    const VERSION = '1.0';
  
     /**
      * Current product, would be overriden by the child classes

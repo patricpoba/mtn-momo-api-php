@@ -32,7 +32,7 @@ class MtnMomoServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'mtn-momo');
+        $this->mergeConfigFrom(__DIR__.'/../config/mtn-momo.php', 'mtn-momo');
 
          
         $config = new MtnConfig([

@@ -14,6 +14,6 @@ class MtnRemittanceFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'mtn-momo-collection';
+        return 'mtn-momo-remittance'; 
     }
 }

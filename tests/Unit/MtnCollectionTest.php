@@ -9,7 +9,7 @@ use PatricPoba\MtnMomo\MtnConfig;
 use GuzzleHttp\Handler\MockHandler;
 use PatricPoba\MtnMomo\MtnCollection;
 
-class MtnMomoTest extends TestCase 
+class MtnCollectionTest extends TestCase 
 {
     protected $config;
 
@@ -31,6 +31,12 @@ class MtnMomoTest extends TestCase
 
         $this->client = new Client(['handler' => $this->mockHandler ]);
     }
+
+    /** @test */
+	public function package_version_is_one_point_one()
+	{ 
+		return $this->assertSame(MtnCollection::VERSION, '1.0');
+	}
 
     /** @test */
     public function can_get_api_token()

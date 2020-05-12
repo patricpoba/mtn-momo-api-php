@@ -9,7 +9,7 @@ class MtnRemittance extends MtnMomo
     const PRODUCT = 'remittance';
 
 
-    protected function requestUrl(string $endpointName, $params = []) : string
+    protected function requestUrl(string $endpointName, array $params = []) : string
     { 
         switch ($endpointName) {
             case 'token':  

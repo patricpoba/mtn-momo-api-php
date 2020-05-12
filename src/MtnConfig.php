@@ -38,12 +38,15 @@ class MtnConfig
      *  - API Secret.
      *  - Primary Key
      *  - User Id
+     *  - callback Url : can be overriden by a url set in the params array 
      */
     public $collectionApiSecret;
 
     public $collectionPrimaryKey;
 
     public $collectionUserId;
+
+    public $collectionCallbackUrl;
      
 
     /**
@@ -51,12 +54,15 @@ class MtnConfig
      *  - API Secret.
      *  - Primary Key
      *  - User Id
+     *  - callback Url : can be overriden by a url set in the params array 
      */
     public $remittanceApiSecret;
 
     public $remittancePrimaryKey;
 
     public $remittanceUserId;
+
+    public $remittanceCallbackUrl;
  
 
     /**
@@ -64,12 +70,15 @@ class MtnConfig
      *  - API Secret.
      *  - Primary Key
      *  - User Id
+     *  - callback Url : can be overriden by a url set in the params array 
      */
     public $disbursementApiSecret;
  
     public $disbursementPrimaryKey;
  
     public $disbursementUserId;
+
+    public $disbursementCallbackUrl;
 
 
     /**

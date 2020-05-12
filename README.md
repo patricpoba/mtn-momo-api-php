@@ -2,6 +2,7 @@
 
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/patricpoba/mtn-momo-api-php.svg?style=flat-square)](https://packagist.org/packages/patricpoba/mtn-momo-api-php)
+[![GitHub license](https://img.shields.io/github/license/patricpoba/mtn-momo-api-php?style=flat-square)](https://github.com/patricpoba/mtn-momo-api-php/blob/master/LICENSE.md)
 [![Build Status](https://img.shields.io/travis/patricpoba/mtn-momo-api-php/master.svg?style=flat-square)](https://travis-ci.org/patricpoba/mtn-momo-api-php)
 [![Quality Score](https://img.shields.io/scrutinizer/g/patricpoba/mtn-momo-api-php.svg?style=flat-square)](https://scrutinizer-ci.com/g/patricpoba/mtn-momo-api-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/patricpoba/mtn-momo-api-php.svg?style=flat-square)](https://packagist.org/packages/patricpoba/mtn-momo-api-php)

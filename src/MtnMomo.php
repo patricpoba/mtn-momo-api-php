@@ -62,7 +62,7 @@ abstract class MtnMomo extends GuzzleClient
         // { access_token: "eyJ0eXAi7MRHUfMHikzQNBPAwZ2dVaIVrUgrbhiUb10A", token_type: "access_token", expires_in: 3600 }
 
         if ( ! $response->isSuccess() ) {
-            throw new MtnMomoException("Error in getting token: {$url}");
+            throw new MtnMomoException("Error in getting token: {$url}. Response: " . (string) $response);
         }
 
         return $response->access_token;

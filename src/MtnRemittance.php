@@ -16,7 +16,7 @@ class MtnRemittance extends MtnMomo
                 $urlSegment = '/remittance/token/' ;
                 break;
 
-            case 'postTransaction': 
+            case 'createTransaction': 
                 $urlSegment = '/remittance/v1_0/transfer';
                 break;
                  

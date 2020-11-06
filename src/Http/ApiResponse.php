@@ -13,6 +13,8 @@ class ApiResponse
     protected $content;
     protected $statusCode;
 
+    protected $requestUrl;
+
     /**
      * Construct object
      *
@@ -20,11 +22,12 @@ class ApiResponse
      * @param string $content
      * @param array $headers
      */
-    public function __construct($statusCode, $content, $headers = array())
+    public function __construct($statusCode, $content, $headers = array(), $requestUrl = null)
     {
         $this->statusCode = $statusCode;
         $this->headers = $headers;
         $this->content = $content;
+        $this->requestUrl = $requestUrl;
 
         /**
          * Dynamically create class variables from content array, so content can be accessed directly.

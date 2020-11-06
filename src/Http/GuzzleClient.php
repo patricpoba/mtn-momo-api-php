@@ -54,7 +54,12 @@ class GuzzleClient implements HttpClientInterface
 
         // Casting the body (stream) to a string performs a rewind, ensuring we return the entire response.
         // See https://stackoverflow.com/a/30549372/86696
-        return new ApiResponse($response->getStatusCode(), (string) $response->getBody(), $response->getHeaders());
+        return new ApiResponse(
+            $response->getStatusCode(), 
+            (string) $response->getBody(), 
+            $response->getHeaders(),
+            strtoupper($method) . " {$url}"
+        );
     }
  
 }

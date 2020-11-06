@@ -38,7 +38,7 @@ class ApiResponse
      * Get array format of api response
      * @return array
      */
-    public function toArray() : array
+    public function toArray()
     {
         return \json_decode($this->content, true);
     }

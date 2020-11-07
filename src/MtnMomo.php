@@ -136,11 +136,14 @@ abstract class MtnMomo extends GuzzleClient
             "X-Reference-Id"            => $transactionUuid
         ];
         
-        $defaultCallbackUrlInEnv = $this->config->getValue(static::PRODUCT, 'callbackUrl');
+        $defaultCallbackUrlInEnv = trim($this->config->getValue(static::PRODUCT, 'callbackUrl'));
+        
+        if (!empty($params['callbackUrl'])) {
+            $headers['X-Callback-Url'] = $params['callbackUrl']; 
 
-        if ( isset($data['callbackUrl']) || is_string($defaultCallbackUrlInEnv) ) {
-            $headers['X-Callback-Url'] = $params['callbackUrl'] ?? $defaultCallbackUrlInEnv; 
-        }
+        }elseif(strlen($defaultCallbackUrlInEnv) > 1){
+            $headers['X-Callback-Url'] = $defaultCallbackUrlInEnv; 
+        } 
 
         $response = $this->request('post', $this->requestUrl('createTransaction'), $params, $headers);
  

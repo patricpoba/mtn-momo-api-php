@@ -16,6 +16,8 @@ abstract class MtnMomo extends GuzzleClient
      * @var string the base url of the API 
      */ 
     const VERSION = '1.0';
+
+    protected $config;
  
     /**
      * Current product, would be overriden by the child classes
@@ -37,6 +39,11 @@ abstract class MtnMomo extends GuzzleClient
         $this->config = $config; 
 
         return $this;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**

@@ -10,10 +10,12 @@ class ApiResponse
     use AttributesMassAssignable;
     
     protected $headers;
+    
     protected $content;
+    
     protected $statusCode;
 
-    protected $requestUrl;
+    public $requestData;
 
     /**
      * Construct object
@@ -22,12 +24,12 @@ class ApiResponse
      * @param string $content
      * @param array $headers
      */
-    public function __construct($statusCode, $content, $headers = array(), $requestUrl = null)
+    public function __construct($statusCode, $content, $headers = array(), $requestData = null)
     {
-        $this->statusCode = $statusCode;
-        $this->headers = $headers;
-        $this->content = $content;
-        $this->requestUrl = $requestUrl;
+        $this->statusCode   = $statusCode;
+        $this->headers      = $headers;
+        $this->content      = $content;
+        $this->requestData  = $requestData;
 
         /**
          * Dynamically create class variables from content array, so content can be accessed directly.

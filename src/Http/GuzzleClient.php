@@ -57,8 +57,13 @@ class GuzzleClient implements HttpClientInterface
         return new ApiResponse(
             $response->getStatusCode(), 
             (string) $response->getBody(), 
-            $response->getHeaders(),
-            strtoupper($method) . " {$url}"
+            $response->getHeaders(), 
+            [
+                'headers'     => $headers,
+                'form_data'   => $params,
+                'url'         => $url,
+                'method'      => strtoupper($method)
+            ]
         );
     }
  

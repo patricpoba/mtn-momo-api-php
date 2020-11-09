@@ -147,12 +147,12 @@ class MtnConfig
      * $throws PatricPoba\MtnMomo\Exceptions\MtnConfigException\MtnConfigException
      * @return string
      */
-    public function getValue($product, $configKey, $throwExceptionIfNotFound = false)
+    public function getValue($product, $configKey, $throwExceptionIfNull = false)
     {
         // if $product = 'collection' and $configKey= 'primaryKey', $configKey = 'collectionPrimaryKey' 
         $configKey = strtolower($product) . ucfirst($configKey);
 
-       if ($throwExceptionIfNotFound && ! isset($this->$configKey)) {
+       if ($throwExceptionIfNull && ! isset($this->$configKey)) {
            throw new MtnConfigException($configKey . " does not exist or is empty on this " . static::class . " instance") ;
        }
 

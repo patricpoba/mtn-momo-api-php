@@ -11,9 +11,9 @@ class ApiResponse
     
     protected $headers;
     
-    protected $content;
+    public $content;
     
-    protected $statusCode;
+    public  $statusCode;
 
     public $requestData;
 

@@ -16,7 +16,7 @@ class MtnDisbursement extends MtnMomo
                 $urlSegment = '/disbursement/token/' ; // trailing slash mandatory
                 break;
 
-            case 'postTransaction': 
+            case 'createTransaction': 
                 $urlSegment = '/disbursement/v1_0/transfer';
                 break;
                  

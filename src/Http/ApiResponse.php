@@ -9,9 +9,13 @@ class ApiResponse
 {
     use AttributesMassAssignable;
     
-    protected $headers;
-    protected $content;
-    protected $statusCode;
+    private $headers;
+    
+    public $content;
+    
+    public  $statusCode;
+
+    public $requestData;
 
     /**
      * Construct object
@@ -20,11 +24,12 @@ class ApiResponse
      * @param string $content
      * @param array $headers
      */
-    public function __construct($statusCode, $content, $headers = array())
+    public function __construct($statusCode, $content, $headers = array(), $requestData = null)
     {
-        $this->statusCode = $statusCode;
-        $this->headers = $headers;
-        $this->content = $content;
+        $this->statusCode   = $statusCode;
+        $this->headers      = $headers;
+        $this->content      = $content;
+        $this->requestData  = $requestData;
 
         /**
          * Dynamically create class variables from content array, so content can be accessed directly.
@@ -38,7 +43,7 @@ class ApiResponse
      * Get array format of api response
      * @return array
      */
-    public function toArray() : array
+    public function toArray()
     {
         return \json_decode($this->content, true);
     }

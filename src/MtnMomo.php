@@ -16,6 +16,8 @@ abstract class MtnMomo extends GuzzleClient
      * @var string the base url of the API 
      */ 
     const VERSION = '1.0';
+
+    protected $config;
  
     /**
      * Current product, would be overriden by the child classes
@@ -37,6 +39,11 @@ abstract class MtnMomo extends GuzzleClient
         $this->config = $config; 
 
         return $this;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
@@ -62,7 +69,7 @@ abstract class MtnMomo extends GuzzleClient
         // { access_token: "eyJ0eXAi7MRHUfMHikzQNBPAwZ2dVaIVrUgrbhiUb10A", token_type: "access_token", expires_in: 3600 }
 
         if ( ! $response->isSuccess() ) {
-            throw new MtnMomoException("Error in getting token: {$url}");
+            throw new MtnMomoException("Error in getting token: {$url}. Response: " . (string) $response);
         }
 
         return $response->access_token;
@@ -129,11 +136,14 @@ abstract class MtnMomo extends GuzzleClient
             "X-Reference-Id"            => $transactionUuid
         ];
         
-        $defaultCallbackUrlInEnv = $this->config->getValue(static::PRODUCT, 'callbackUrl');
+        $defaultCallbackUrlInEnv = trim($this->config->getValue(static::PRODUCT, 'callbackUrl'));
+        
+        if (!empty($params['callbackUrl'])) {
+            $headers['X-Callback-Url'] = $params['callbackUrl']; 
 
-        if ( isset($data['callbackUrl']) || is_string($defaultCallbackUrlInEnv) ) {
-            $headers['X-Callback-Url'] = $params['callbackUrl'] ?? $defaultCallbackUrlInEnv; 
-        }
+        }elseif(strlen($defaultCallbackUrlInEnv) > 1){
+            $headers['X-Callback-Url'] = $defaultCallbackUrlInEnv; 
+        } 
 
         $response = $this->request('post', $this->requestUrl('createTransaction'), $params, $headers);
  

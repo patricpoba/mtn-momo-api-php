@@ -9,7 +9,7 @@ class ApiResponse
 {
     use AttributesMassAssignable;
     
-    protected $headers;
+    private $headers;
     
     public $content;
     

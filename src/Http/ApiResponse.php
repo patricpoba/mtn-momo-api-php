@@ -15,7 +15,7 @@ class ApiResponse
     
     public  $statusCode;
 
-    public $requestData;
+    protected $requestData;
 
     /**
      * Construct object

@@ -106,7 +106,7 @@ $config = new MtnConfig([
 $collection = new MtnCollection($config); 
 
 $params = [
-    "mobileNumber"      => '0546861073', 
+    "mobileNumber"      => '233540000000', 
     "amount"            => '100', 
     "externalId"        => '774747234',
     "payerMessage"      => 'some note',
@@ -181,7 +181,7 @@ $config = new MtnConfig([
 $disbursement = new MtnDisbursement($config); 
 
 $params = [
-    "mobileNumber"      => '0546861073', 
+    "mobileNumber"      => '233540000000', 
     "amount"            => '100', 
     "externalId"        => '774747234',
     "payerMessage"      => 'some note',
@@ -260,7 +260,7 @@ $config = new MtnConfig([
 $remittance = new MtnRemittance($config); 
 
 $params = [
-    "mobileNumber"      => '0546861073', 
+    "mobileNumber"      => '233540000000', 
     "amount"            => '100', 
     "externalId"        => '774747234',
     "payerMessage"      => 'some note',

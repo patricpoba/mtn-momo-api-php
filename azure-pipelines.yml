@@ -21,8 +21,13 @@ steps:
     php -version
   displayName: 'Use PHP version $(phpVersion)'
 
+- script: |
+    sudo bash -c "echo \"xdebug.mode=coverage\" > /etc/php/7.4/cli/php.ini"
+  displayName: 'Set XDEBUG mode'
+  
 - script: composer install --no-interaction --prefer-dist
   displayName: 'composer install'
 
 - script: vendor/bin/phpunit --testdox
   displayName: 'run tests'
+

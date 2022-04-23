@@ -86,7 +86,7 @@ class MtnConfigTest extends TestCase
         
         $config = new MtnConfig($this->configArray); 
         
-        $config->getValue('collection', 'wrongProductConfig');
+        $config->getValue('collection', 'wrongProductConfig', true);
     }
  
 }

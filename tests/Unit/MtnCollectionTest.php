@@ -16,7 +16,7 @@ class MtnCollectionTest extends TestCase
     protected $client;
 
 
-    public function setUp() 
+    public function setUp(): void
     { 
         $this->config = new MtnConfig([
             'baseUrl'              => 'https://sandbox.momodeveloper.mtn.com',

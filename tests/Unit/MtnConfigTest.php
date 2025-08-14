@@ -12,7 +12,7 @@ class MtnConfigTest extends TestCase
     protected $configArray;
 
 
-    public function setUp()
+    public function setUp(): void
     { 
         $this->configArray = [
             'baseUrl'               => 'https://sandbox.momodeveloper.mtn.com',
